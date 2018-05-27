@@ -54,17 +54,17 @@ let friends = [];
 
 function renderList(obj, parent) {
     parent.innerHTML = '';
-    for (let item of obj) {
+    for (let {id, first_name, last_name, photo_50} of obj) {
         const li = document.createElement('li');
         li.draggable = true;
-        li.id = item.id;
+        li.id = id;
         const img = document.createElement('img');
-        img.src = item.photo_50;
+        img.src = photo_50;
         img.className = 'photo';
         const nameDiv = document.createElement('div');
         nameDiv.className = 'name';
         const name = document.createElement('span');
-        name.textContent = `${item.first_name} ${item.last_name}`;                
+        name.textContent = `${first_name} ${last_name}`;                
         const button = document.createElement('i');
         button.className = (parent.id === 'friends') ? 'flaticon-add' : 'flaticon-delete';
         nameDiv.appendChild(img);        
