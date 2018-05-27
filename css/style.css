@@ -14,8 +14,6 @@ body {
     font-size: 12px;
     background-color: gray;
 }
-.ff-main {
-}
 /* =========header======== */
 
 .ff_main_header {
@@ -62,9 +60,6 @@ input {
     font-size: 1em;
 }
 
-.flaticon-add, .flaticon-delete {
-    color: #e7e7e7;
-}
 /* ======main content====== */
 
 .ff_main_content {
@@ -79,7 +74,6 @@ width: 600px;
 .ff_main_content-left , .ff_main_content-right {
     display: flex;
     flex-direction: column;
-    overflow: auto;
     width: 50%;
 }
 
@@ -91,11 +85,24 @@ width: 600px;
     
 }
 
+.ff_main_content_list {
+    height: 100%;
+    overflow: auto;  
+}
+
 .name {
     display: flex;
     justify-content: space-around;
-    padding: 15px 0 0 5px;
+    padding: 15px 0 10px 5px;
 }
+
+
+.flaticon-add, .flaticon-delete {
+    color: #e7e7e7;
+    padding: 25px;
+    cursor: pointer;
+}
+
 
 li {
     list-style-type: none;
@@ -108,10 +115,6 @@ li:hover {
     background-color: #f1ecec;
 }
 
-.flaticon-add , .flaticon-delete{
-    padding: 15px;
-    cursor: pointer;
-}
 
 span {
     padding: 15px;

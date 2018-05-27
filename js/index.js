@@ -44,15 +44,27 @@ function callApi(method, params) {
     }
 })();
 
-let friendsList = document.getElementById('friends');
-let choosenList = document.getElementById('choosen');
-let mainContent = document.querySelector('.ff_main_content');
+const friendsList = document.getElementById('friends');
+const choosenList = document.getElementById('choosen');
+const mainContent = document.querySelector('.ff_main_content');
+const search = document.querySelector('.ff_main_search');
 let choosenFriends = [];
 let friends = [];
+let filteredFriends = [];
+let filteredChoosen = [];
+
 
 /* ====== render ====== */
 
 function renderList(obj, parent) {
+    obj.sort((a, b) => {
+        let textA = a.last_name.toUpperCase();
+        let textB = b.last_name.toUpperCase();
+
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
+    obj = (parent.parentNode.className.includes('left')) ? obj.filter(item => filterByName(item, search.children[0].value)) : obj;
+    obj = (parent.parentNode.className.includes('right')) ? obj.filter(item => filterByName(item, search.children[1].value)) : obj;    
     parent.innerHTML = '';
     for (let {id, first_name, last_name, photo_50} of obj) {
         const li = document.createElement('li');
@@ -64,7 +76,7 @@ function renderList(obj, parent) {
         const nameDiv = document.createElement('div');
         nameDiv.className = 'name';
         const name = document.createElement('span');
-        name.textContent = `${first_name} ${last_name}`;                
+        name.textContent = `${last_name} ${first_name}`;                
         const button = document.createElement('i');
         button.className = (parent.id === 'friends') ? 'flaticon-add' : 'flaticon-delete';
         nameDiv.appendChild(img);        
@@ -85,6 +97,29 @@ if (!localStorage.dataSave) {
     renderList(friends, friendsList);
     renderList(choosenFriends, choosenList);         
 }
+
+/* ========filtration======== */
+
+function filterByName (item, chunk) {
+    let fullName = `${item.first_name} ${item.last_name}`;
+
+    return fullName.toLowerCase().includes(chunk.toLowerCase())
+}
+
+search.addEventListener('keyup', event => {
+    let input = event.target;
+    switch (input.className) {
+        case 'ff_main_search-left':
+            filteredFriends = friends.filter(item => filterByName(item, input.value));                
+            renderList(filteredFriends, friendsList);
+            break;
+        case 'ff_main_search-right':
+            filteredChoosen = choosenFriends.filter(item => filterByName(item, input.value));                
+            renderList(filteredChoosen, choosenList);
+            break;
+        }
+    }
+);
 
 /* ========== adding items by button =========== */
 
@@ -110,31 +145,6 @@ mainContent.addEventListener('click', event => {
     renderList(friends, friendsList);    
     renderList(choosenFriends, choosenList);
 })
-
-/* ========filtration======== */
-
-const search = document.querySelector('.ff_main_search');
-
-function filterByName (item, chunk) {
-    let fullName = `${item.first_name} ${item.last_name}`;
-
-    return fullName.toLowerCase().includes(chunk.toLowerCase())
-}
-
-search.addEventListener('keyup', event => {
-    let input = event.target;
-    switch (input.className) {
-        case 'ff_main_search-left':
-            let filteredFriends = friends.filter(item => filterByName(item, input.value));                
-            renderList(filteredFriends, friendsList);
-            break;
-        case 'ff_main_search-right':
-            let filteredChoosen = choosenFriends.filter(item => filterByName(item, input.value));                
-            renderList(filteredChoosen, choosenList);
-            break;
-        }
-    }
-);
 
 /* ============= save data ========== */
 
